@@ -16,7 +16,7 @@ public class ScriptHandlerTest {
     }
 
     @Test
-    public void removeIdOfMainScriptFromListDependenciesWithMainId() {
+    public void shouldRemoveIdOfMainScriptFromListDependenciesWithMainId() {
         List<Integer> list = Arrays.asList(1, 1, 2, 3, 7, 5, 6);
         List<Integer> expected = Arrays.asList(2, 3, 5, 6, 7);
 
@@ -26,7 +26,7 @@ public class ScriptHandlerTest {
     }
 
     @Test
-    public void removeIdOfMainScriptFromListDependenciesWithoutMainId() {
+    public void shouldRemoveIdOfMainScriptFromListDependenciesWithoutMainId() {
         List<Integer> list = Arrays.asList(2, 3, 7, 5, 6);
         List<Integer> expected = Arrays.asList(2, 3, 5, 6, 7);
 
@@ -36,7 +36,7 @@ public class ScriptHandlerTest {
     }
 
     @Test
-    public void setNewDependenciesForIdEqualsTwo(){
+    public void shouldSetNewDependenciesForSecondId(){
         List<Integer> expected = Arrays.asList(5, 6);
 
         List<Integer> actual = scriptHandler.setNewDependencies(0);
