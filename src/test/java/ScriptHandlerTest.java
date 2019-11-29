@@ -1,30 +1,46 @@
+import org.junit.Before;
 import org.junit.Test;
+import sun.font.Script;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class ScriptHandlerTest {
+    private ScriptHandler scriptHandler;
 
-    @Test
-    public void go() {
+    @Before
+    public void setUp() {
+        scriptHandler = new ScriptHandler(new InputData());
     }
 
     @Test
-    public void createScripts() {
+    public void removeIdOfMainScriptFromListDependenciesWithMainId() {
+        List<Integer> list = Arrays.asList(1, 1, 2, 3, 7, 5, 6);
+        List<Integer> expected = Arrays.asList(2, 3, 5, 6, 7);
+
+        List<Integer> actual = scriptHandler.removeMainIdFromDependencies(list, 1);
+
+        assertEquals(actual, expected);
     }
 
     @Test
-    public void removeMainIdFromDependencies() {
+    public void removeIdOfMainScriptFromListDependenciesWithoutMainId() {
+        List<Integer> list = Arrays.asList(2, 3, 7, 5, 6);
+        List<Integer> expected = Arrays.asList(2, 3, 5, 6, 7);
+
+        List<Integer> actual = scriptHandler.removeMainIdFromDependencies(list, 1);
+
+        assertEquals(actual, expected);
     }
 
     @Test
-    public void removeLooping() {
-    }
+    public void setNewDependenciesForIdEqualsTwo(){
+        List<Integer> expected = Arrays.asList(5, 6);
 
-    @Test
-    public void sortDependencies() {
-    }
+        List<Integer> actual = scriptHandler.setNewDependencies(0);
 
-    @Test
-    public void removeDuplicates() {
+        assertEquals(actual, expected);
     }
 }
