@@ -3,63 +3,73 @@ import inputScript.VulnerabilityScript;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static inputScript.VulnerabilityScript.COMPARE_BY_ID;
+
 public class ScriptHandler {
-    private InputData inputDependencies;
-    private List<VulnerabilityScript> vulnerabilityScriptList = new ArrayList<>();
 
-    public ScriptHandler(InputData inputDependencies) {
-        this.inputDependencies = inputDependencies;
+    private List<VulnerabilityScript> vulnerabilityScriptList;
+
+    public ScriptHandler(List<VulnerabilityScript> vulnerabilityScriptList) {
+        this.vulnerabilityScriptList = vulnerabilityScriptList;
     }
 
-    public void go(int id) {
-        List<Integer> scriptIds = inputDependencies.getDependencies();
-        Collections.sort(scriptIds);
-
-        VulnerabilityScript mainScript = new VulnerabilityScript(id, removeDuplicates(removeMainIdFromDependencies(createScripts(id, scriptIds), id)));
-        System.out.println("\n" + mainScript.toString() + " main");
+    public void go() {
+        Collections.sort(vulnerabilityScriptList, COMPARE_BY_ID);
+        System.out.println("Basic scripts");
+        System.out.println(vulnerabilityScriptList);
+        System.out.println("Created scripts as dependencies without duplicates");
+        System.out.println(createScriptsInDependencies(removeDuplicates(vulnerabilityScriptList)));
     }
 
-    public List<Integer> createScripts(int id, List<Integer> deps) {
-        System.out.println("Scripts inside main \n");
 
-        deps = removeMainIdFromDependencies(removeDuplicates(deps), id);
+    public List<VulnerabilityScript> createScriptsInDependencies(List<VulnerabilityScript> list){
+        List<VulnerabilityScript> scriptList = new ArrayList<>();
         int j = 0;
 
-        for (Integer i : deps) {
-            VulnerabilityScript scr = new VulnerabilityScript(i, setNewDependencies(j));
-            vulnerabilityScriptList.add(scr);
+        for (VulnerabilityScript script : list){
+            VulnerabilityScript scr1 = new VulnerabilityScript(script.getDependencies().get(0), setNewDependencies(j));
             j++;
+            VulnerabilityScript scr2 = new VulnerabilityScript(script.getDependencies().get(1), setNewDependencies(j));
+            j++;
+            scriptList.add(scr1);
+            scriptList.add(scr2);
         }
 
-        System.out.println(vulnerabilityScriptList);
-        return deps;
-    }
-
-    public List<Integer> removeMainIdFromDependencies(List<Integer> list, int id) {
-        List<Integer> ids = new ArrayList<>();
-        for (Integer i : list) {
-            if (i != id) {
-                ids.add(i);
-            }
-        }
-        Collections.sort(ids);
-        return ids;
+        return scriptList;
     }
 
     public List<Integer> setNewDependencies(int i) {
         List<List<Integer>> ids = new ArrayList<>(
                 Arrays.asList(
-                        Arrays.asList(5, 6),
-                        Arrays.asList(7, 8),
-                        Arrays.asList(9, 10)
+                        Arrays.asList(10, 11),
+                        Arrays.asList(12, 13),
+                        Arrays.asList(14, 15),
+                        Arrays.asList(16, 17),
+                        Arrays.asList(18, 19),
+                        Arrays.asList(20, 21),
+                        Arrays.asList(18, 19),
+                        Arrays.asList(20, 21)
                 ));
+
         return ids.get(i);
     }
 
-    public List<Integer> removeDuplicates(List<Integer> list) {
-        return list
-                .stream()
-                .distinct()
-                .collect(Collectors.toList());
+    public List<VulnerabilityScript> removeDuplicates(List<VulnerabilityScript> list) {
+        List<Integer> dependencies = new ArrayList<>();
+
+        for (VulnerabilityScript script : list){
+            dependencies.add(script.getScriptId());
+        }
+
+        int size = dependencies.size();
+
+        for(int i=0; i<size-1;i++){
+            if(dependencies.get(i) == dependencies.get(i+1)){
+                list.remove(i+1);
+                dependencies.remove(i+1);
+                size--;
+            }
+        }
+        return list;
     }
 }
