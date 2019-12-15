@@ -6,13 +6,27 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        VulnerabilityScript scriptA = new VulnerabilityScript(1, Arrays.asList(4, 5));
-        VulnerabilityScript scriptB = new VulnerabilityScript(2, Arrays.asList(6, 7));
-        VulnerabilityScript scriptC = new VulnerabilityScript(3, Arrays.asList(8, 9));
+        VulnerabilityScript scriptI = new VulnerabilityScript(9, Arrays.asList());
+        VulnerabilityScript scriptH = new VulnerabilityScript(8, Arrays.asList());
+        VulnerabilityScript scriptG = new VulnerabilityScript(7, Arrays.asList());
 
-        List<VulnerabilityScript> vulnerabilityScriptList = new ArrayList<>(Arrays.asList(scriptA, scriptC, scriptB));
+        VulnerabilityScript scriptF = new VulnerabilityScript(6, Arrays.asList(scriptI.getScriptId()));
+        VulnerabilityScript scriptE = new VulnerabilityScript(5, Arrays.asList(scriptF.getScriptId()));
+        VulnerabilityScript scriptD = new VulnerabilityScript(4, Arrays.asList(scriptH.getScriptId()));
 
-        ScriptHandler scriptHandler = new ScriptHandler(vulnerabilityScriptList);
-        scriptHandler.go();
+        VulnerabilityScript scriptC = new VulnerabilityScript(3, Arrays.asList(scriptH.getScriptId(), scriptI.getScriptId()));
+        VulnerabilityScript scriptB = new VulnerabilityScript(2, Arrays.asList(scriptF.getScriptId(), scriptG.getScriptId()));
+        VulnerabilityScript scriptA = new VulnerabilityScript(1, Arrays.asList(scriptD.getScriptId(), scriptE.getScriptId()));
+
+        List<VulnerabilityScript> vulnerabilityScriptList =
+                new ArrayList<>(Arrays.asList(scriptA, scriptC, scriptB,
+                                              scriptI, scriptD, scriptH,
+                                              scriptF, scriptE, scriptG));
+
+        ScriptHandler scriptHandler = new ScriptHandler();
+        scriptHandler.go(vulnerabilityScriptList);
+
+        System.out.println("Basic scripts");
+        System.out.println(vulnerabilityScriptList);
     }
 }

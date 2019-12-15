@@ -5,64 +5,99 @@ import sun.font.Script;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import static inputScript.VulnerabilityScript.COMPARE_BY_ID;
 import static org.junit.Assert.*;
 
 public class ScriptHandlerTest {
     private ScriptHandler scriptHandler;
-    private List<VulnerabilityScript> vulnerabilityScriptList = new ArrayList<>();
 
     @Before
     public void setUp() {
-        scriptHandler = new ScriptHandler(vulnerabilityScriptList);
+        scriptHandler = new ScriptHandler();
     }
 
     @Test
-    public void shouldRemoveDuplicatesInMainScriptsList() {
+    public void shouldTestGOMethod(){
+        VulnerabilityScript scriptI = new VulnerabilityScript(9, Arrays.asList());
+        VulnerabilityScript scriptH = new VulnerabilityScript(8, Arrays.asList());
+        VulnerabilityScript scriptG = new VulnerabilityScript(7, Arrays.asList());
 
-        VulnerabilityScript scriptA = new VulnerabilityScript(1, Arrays.asList(4, 5));
-        VulnerabilityScript scriptB = new VulnerabilityScript(2, Arrays.asList(6, 7));
-        VulnerabilityScript scriptC = new VulnerabilityScript(3, Arrays.asList(8, 9));
-        VulnerabilityScript scriptD = new VulnerabilityScript(2, Arrays.asList(6, 7));
+        VulnerabilityScript scriptF = new VulnerabilityScript(6, Arrays.asList(scriptI.getScriptId()));
+        VulnerabilityScript scriptE = new VulnerabilityScript(5, Arrays.asList(scriptF.getScriptId()));
+        VulnerabilityScript scriptD = new VulnerabilityScript(4, Arrays.asList(scriptH.getScriptId()));
 
-        List<VulnerabilityScript> vulnerabilityScriptList = new ArrayList<>(Arrays.asList(scriptA, scriptC, scriptB, scriptD));
-        Collections.sort(vulnerabilityScriptList, COMPARE_BY_ID);
-
-        List<VulnerabilityScript> expected = Arrays.asList(scriptA, scriptB, scriptC);
-
-        List<VulnerabilityScript> actual = scriptHandler.removeDuplicates(vulnerabilityScriptList);
-
-        assertEquals(actual, expected);
-    }
+        VulnerabilityScript scriptC = new VulnerabilityScript(3, Arrays.asList(scriptH.getScriptId(), scriptI.getScriptId()));
+        VulnerabilityScript scriptB = new VulnerabilityScript(2, Arrays.asList(scriptF.getScriptId(), scriptG.getScriptId()));
+        VulnerabilityScript scriptA = new VulnerabilityScript(1, Arrays.asList());
 
 
-    @Test
-    public void shouldSetNewDependenciesForSecondId(){
-        List<List<Integer>> expected = Arrays.asList(Arrays.asList(14, 15), Arrays.asList(16, 17));
-
-        List<List<Integer>> actual = Arrays.asList(scriptHandler.setNewDependencies(2), scriptHandler.setNewDependencies(3));
-
-        assertEquals(actual, expected);
-    }
-
-    @Test
-    public void shouldSortListByComparator(){
-        VulnerabilityScript scriptA = new VulnerabilityScript(1, Arrays.asList(4, 5));
-        VulnerabilityScript scriptB = new VulnerabilityScript(2, Arrays.asList(6, 7));
-        VulnerabilityScript scriptC = new VulnerabilityScript(3, Arrays.asList(8, 9));
-        VulnerabilityScript scriptD = new VulnerabilityScript(4, Arrays.asList(10, 11));
-        VulnerabilityScript scriptE = new VulnerabilityScript(5, Arrays.asList(12, 13));
 
         List<VulnerabilityScript> vulnerabilityScriptList =
-                new ArrayList<>(Arrays.asList(scriptE, scriptC, scriptB, scriptA, scriptD));
+                new ArrayList<>(Arrays.asList(scriptE, scriptC, scriptB, scriptA, scriptD,
+                        scriptH,  scriptG, scriptI, scriptF));
 
-        List<VulnerabilityScript> expected = Arrays.asList(scriptA, scriptB, scriptC, scriptD, scriptE);
+        List<VulnerabilityScript> expected = Arrays.asList(scriptA, scriptG, scriptH, scriptI,
+                 scriptD, scriptE, scriptF, scriptB, scriptC);
 
-        Collections.sort(vulnerabilityScriptList, COMPARE_BY_ID);
-        List<VulnerabilityScript> actual = vulnerabilityScriptList;
+        List<VulnerabilityScript> actual = scriptHandler.go(vulnerabilityScriptList);
+
+        assertEquals(actual, expected);
+    }
+
+    @Test
+    public void shouldTestGOMethodWithoutDependencies(){
+        VulnerabilityScript scriptI = new VulnerabilityScript(9, Arrays.asList());
+        VulnerabilityScript scriptH = new VulnerabilityScript(8, Arrays.asList());
+        VulnerabilityScript scriptG = new VulnerabilityScript(7, Arrays.asList());
+
+        VulnerabilityScript scriptF = new VulnerabilityScript(6, Arrays.asList());
+        VulnerabilityScript scriptE = new VulnerabilityScript(5, Arrays.asList());
+        VulnerabilityScript scriptD = new VulnerabilityScript(4, Arrays.asList());
+
+        VulnerabilityScript scriptC = new VulnerabilityScript(3, Arrays.asList());
+        VulnerabilityScript scriptB = new VulnerabilityScript(2, Arrays.asList());
+        VulnerabilityScript scriptA = new VulnerabilityScript(1, Arrays.asList());
+
+
+
+        List<VulnerabilityScript> vulnerabilityScriptList =
+                new ArrayList<>(Arrays.asList(scriptE, scriptC, scriptB, scriptA, scriptD,
+                        scriptH,  scriptG, scriptI, scriptF));
+
+        List<VulnerabilityScript> expected = Arrays.asList(scriptA, scriptB, scriptC, scriptD,
+                scriptE, scriptF, scriptG, scriptH, scriptI);
+
+        List<VulnerabilityScript> actual = scriptHandler.go(vulnerabilityScriptList);
+
+        assertEquals(actual, expected);
+    }
+
+    @Test
+    public void shouldTestGOMethodWithDuplicates(){
+        VulnerabilityScript scriptI = new VulnerabilityScript(9, Arrays.asList());
+        VulnerabilityScript scriptH = new VulnerabilityScript(8, Arrays.asList());
+        VulnerabilityScript scriptG = new VulnerabilityScript(7, Arrays.asList());
+
+        VulnerabilityScript scriptF = new VulnerabilityScript(6, Arrays.asList(scriptI.getScriptId()));
+        VulnerabilityScript scriptE = new VulnerabilityScript(5, Arrays.asList(scriptF.getScriptId()));
+
+        VulnerabilityScript scriptD = new VulnerabilityScript(3, Arrays.asList(scriptH.getScriptId(), scriptI.getScriptId()));
+        VulnerabilityScript scriptC = new VulnerabilityScript(3, Arrays.asList(scriptH.getScriptId(), scriptI.getScriptId()));
+        VulnerabilityScript scriptB = new VulnerabilityScript(2, Arrays.asList(scriptF.getScriptId(), scriptG.getScriptId()));
+
+        VulnerabilityScript scriptA = new VulnerabilityScript(1, Arrays.asList(scriptB.getScriptId()));
+
+
+
+        List<VulnerabilityScript> vulnerabilityScriptList =
+                new ArrayList<>(Arrays.asList(scriptE, scriptC, scriptB, scriptA, scriptD,
+                        scriptH,  scriptG, scriptI, scriptF));
+
+        List<VulnerabilityScript> expected = Arrays.asList(scriptG, scriptH, scriptI, scriptA,
+                scriptE, scriptF, scriptB, scriptC);
+
+        List<VulnerabilityScript> actual = scriptHandler.go(vulnerabilityScriptList);
 
         assertEquals(actual, expected);
     }
