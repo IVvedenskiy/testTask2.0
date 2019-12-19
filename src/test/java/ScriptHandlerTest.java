@@ -38,7 +38,7 @@ public class ScriptHandlerTest {
                         scriptH,  scriptG, scriptI, scriptF));
 
         List<VulnerabilityScript> expected = Arrays.asList(scriptA, scriptG, scriptH, scriptI,
-                 scriptD, scriptE, scriptF, scriptB, scriptC);
+                 scriptD, scriptF, scriptE, scriptB, scriptC);
 
         List<VulnerabilityScript> actual = scriptHandler.go(vulnerabilityScriptList);
 
@@ -95,7 +95,7 @@ public class ScriptHandlerTest {
                         scriptH,  scriptG, scriptI, scriptF));
 
         List<VulnerabilityScript> expected = Arrays.asList(scriptG, scriptH, scriptI, scriptA,
-                scriptE, scriptF, scriptB, scriptC);
+                scriptF, scriptE, scriptB, scriptC);
 
         List<VulnerabilityScript> actual = scriptHandler.go(vulnerabilityScriptList);
 

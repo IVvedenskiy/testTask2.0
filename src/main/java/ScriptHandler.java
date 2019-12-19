@@ -1,10 +1,8 @@
 import inputScript.VulnerabilityScript;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-import static inputScript.VulnerabilityScript.COMPARE_BY_DEPENDENCY_COUNT;
-import static inputScript.VulnerabilityScript.COMPARE_BY_ID;
+import static inputScript.VulnerabilityScript.*;
 
 public class ScriptHandler {
 
@@ -19,6 +17,7 @@ public class ScriptHandler {
         Collections.sort(vulnerabilityScriptList, COMPARE_BY_ID);
         removeDuplicates(vulnerabilityScriptList);
         Collections.sort(vulnerabilityScriptList, COMPARE_BY_DEPENDENCY_COUNT);
+        Collections.sort(vulnerabilityScriptList, COMPARE_BY_ID_IN_DEPENDENCY);
 
         return vulnerabilityScriptList;
     }
